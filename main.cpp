@@ -9,7 +9,7 @@ extern template struct AoC::Solution<1>;
 template <typename ThisSolution>
 void handle_day(int day) {
   if constexpr (AoC::partially_solved<ThisSolution>) {
-    auto stream = AoC::input_stream(1);
+    auto stream = AoC::input_stream(day);
     ThisSolution solution{stream};
     fmt::print("Day {:02}, Part 1: {}\n", day, solution.part1());
     if constexpr (AoC::fully_solved<ThisSolution>) {
