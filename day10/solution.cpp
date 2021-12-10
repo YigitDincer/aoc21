@@ -75,13 +75,13 @@ namespace Day10 {
     });
   }
 
-  auto calculate_points_for_part2(std::vector<std::string> const &input) -> long long int {
+  auto calculate_points_for_part2(std::vector<std::string> const &input) -> size_t {
 
     std::vector<std::string> filtered_result;
     std::copy_if(input.begin(), input.end(), std::back_inserter(filtered_result),
                  [](std::string line) { return !first_illegal_character(line).has_value(); });
 
-    std::vector<long long int> missing_char_scores;
+    std::vector<size_t> missing_char_scores;
     std::transform(filtered_result.begin(), filtered_result.end(),
                    std::back_inserter(missing_char_scores),
                    [](std::string line) { return mathematical_sum_of_missing_characters(line); });
@@ -111,7 +111,7 @@ namespace Day10 {
     return std::nullopt;
   }
 
-  auto mathematical_sum_of_missing_characters(std::string const &line) -> long long int {
+  auto mathematical_sum_of_missing_characters(std::string const &line) -> size_t {
     std::stack<char> stack;
 
     for (auto const &character : line) {
@@ -125,7 +125,7 @@ namespace Day10 {
       }
     }
 
-    long long int sum = 0;
+    size_t sum = 0;
     while (!stack.empty()) {
       sum = sum * 5 + char_values_for_part2(stack.top());
       stack.pop();
@@ -147,7 +147,7 @@ namespace AoC {
     return calculate_points_for_part1(report);
   }
 
-  auto Solution<10>::part2() const -> long long int {
+  auto Solution<10>::part2() const -> size_t {
     using namespace Day10;
     return calculate_points_for_part2(report);
   }
