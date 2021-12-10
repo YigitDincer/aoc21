@@ -43,3 +43,8 @@ target_link_libraries(aoc21-test
 add_subdirectory(day01)
 add_subdirectory(day02)
 add_subdirectory(day03)
+add_subdirectory(day04)
+add_subdirectory(day07)
+add_subdirectory(day08)
+add_subdirectory(day09)
+add_subdirectory(day10)

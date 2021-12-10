@@ -3,12 +3,22 @@
 #include "day01/solution.h"
 #include "day02/solution.h"
 #include "day03/solution.h"
+#include "day04/solution.h"
+#include "day07/solution.h"
+#include "day08/solution.h"
+#include "day09/solution.h"
+#include "day10/solution.h"
 #include "input.h"
 #include "solution.h"
 
 extern template struct AoC::Solution<1>;
 extern template struct AoC::Solution<2>;
 extern template struct AoC::Solution<3>;
+extern template struct AoC::Solution<4>;
+extern template struct AoC::Solution<7>;
+extern template struct AoC::Solution<8>;
+extern template struct AoC::Solution<9>;
+extern template struct AoC::Solution<10>;
 
 template <typename ThisSolution>
 void handle_day(int day) {
