@@ -11,6 +11,17 @@ constexpr std::array INPUT{"start-A"sv, "start-b"sv, "A-c"sv,  "A-b"sv,
                            "b-d"sv,     "A-end"sv,   "b-end"sv};
 constexpr std::array SMALL_INPUT{"start-A"sv, "A-b"sv, "b-end"sv, "A-end"sv};
 
+constexpr std::array SLIGHTY_LARGER_EXAMPLE{
+        "dc-end"sv, "HN-start"sv, "start-kj"sv, "dc-start"sv, "dc-HN"sv,
+        "LN-dc"sv,  "HN-end"sv,   "kj-sa"sv,    "kj-HN"sv,    "kj-dc"sv,
+};
+
+constexpr std::array EVEN_LARGER_EXAMPLE{
+        "fs-end"sv, "he-DX"sv,    "fs-he"sv, "start-DX"sv, "pj-DX"sv, "end-zg"sv,
+        "zg-sl"sv,  "zg-pj"sv,    "pj-he"sv, "RW-he"sv,    "fs-DX"sv, "pj-RW"sv,
+        "zg-RW"sv,  "start-pj"sv, "he-WI"sv, "zg-he"sv,    "pj-fs"sv, "start-RW"sv,
+};
+
 TEST(Day12, parse_connection) {
   auto connection{"start-A"};
   std::pair<std::string, std::string> expectation{"start", "A"};
@@ -74,4 +85,20 @@ TEST(Day12, count_possible_paths) {
   auto nodes = Day12::create_nodes(connection_map, Day12::is_legal);
 
   EXPECT_EQ(Day12::count_possible_paths(nodes), 10);
+}
+
+TEST(Day12, count_possible_paths_slighly_larger) {
+  auto connections_pairs = Day12::parse_input(SLIGHTY_LARGER_EXAMPLE);
+  auto connection_map = Day12::create_map(connections_pairs);
+  auto nodes = Day12::create_nodes(connection_map, Day12::is_legal);
+
+  EXPECT_EQ(Day12::count_possible_paths(nodes), 19);
+}
+
+TEST(Day12, count_possible_paths_even_larger) {
+  auto connections_pairs = Day12::parse_input(EVEN_LARGER_EXAMPLE);
+  auto connection_map = Day12::create_map(connections_pairs);
+  auto nodes = Day12::create_nodes(connection_map, Day12::is_legal);
+
+  EXPECT_EQ(Day12::count_possible_paths(nodes), 226);
 }

@@ -68,7 +68,7 @@ namespace Day12 {
     return connection_map;
   }
 
-  auto is_legal(std::vector<Node> nodes, std::string string_to_check, int parent_idx) -> bool {
+  auto is_legal(std::vector<Node> const& nodes, std::string_view string_to_check, int parent_idx) -> bool {
 
     if (std::ranges::any_of(string_to_check, [](unsigned char c) { return std::islower(c); })) {
       while (parent_idx != -1) {
