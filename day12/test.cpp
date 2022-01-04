@@ -9,6 +9,7 @@
 using namespace std::string_view_literals;
 constexpr std::array INPUT{"start-A"sv, "start-b"sv, "A-c"sv,  "A-b"sv,
                            "b-d"sv,     "A-end"sv,   "b-end"sv};
+constexpr std::array MIDDLE_INPUT{"start-A"sv, "A-c"sv, "A-end"sv, "start-b"sv, "b-end"sv, "b-A"sv};
 constexpr std::array SMALL_INPUT{"start-A"sv, "A-b"sv, "b-end"sv, "A-end"sv};
 
 constexpr std::array SLIGHTY_LARGER_EXAMPLE{
@@ -101,4 +102,59 @@ TEST(Day12, count_possible_paths_even_larger) {
   auto nodes = Day12::create_nodes(connection_map, Day12::is_legal);
 
   EXPECT_EQ(Day12::count_possible_paths(nodes), 226);
+}
+
+TEST(Day12, count_possible_paths_small_input_part2) {
+  auto connections_pairs = Day12::parse_input(SMALL_INPUT);
+  auto connection_map = Day12::create_map(connections_pairs);
+  auto nodes = Day12::create_nodes(connection_map, Day12::is_legal_part2);
+
+  EXPECT_EQ(Day12::count_possible_paths(nodes), 5);
+}
+
+TEST(Day12, count_possible_paths_part2) {
+  auto connections_pairs = Day12::parse_input(INPUT);
+  auto connection_map = Day12::create_map(connections_pairs);
+  auto nodes = Day12::create_nodes(connection_map, Day12::is_legal_part2);
+
+  EXPECT_EQ(Day12::count_possible_paths(nodes), 36);
+}
+
+TEST(Day12, count_possible_paths_middle_input_part2) {
+  auto connections_pairs = Day12::parse_input(MIDDLE_INPUT);
+  auto connection_map = Day12::create_map(connections_pairs);
+  auto nodes = Day12::create_nodes(connection_map, Day12::is_legal_part2);
+
+//  for (auto const& node : nodes)
+//  {
+//    if(node.name=="end")
+//    {
+//      std::cout << "end-";
+//      auto parent_idx = node.parent_idx;
+//      while(parent_idx != -1)
+//      {
+//        std::cout << nodes[parent_idx].name << "-";
+//        parent_idx = nodes[parent_idx].parent_idx;
+//      }
+//      std::cout << std::endl;
+//    }
+//  }
+
+  EXPECT_EQ(Day12::count_possible_paths(nodes), 10);
+}
+
+TEST(Day12, count_possible_paths_slighly_larger_part2) {
+  auto connections_pairs = Day12::parse_input(SLIGHTY_LARGER_EXAMPLE);
+  auto connection_map = Day12::create_map(connections_pairs);
+  auto nodes = Day12::create_nodes(connection_map, Day12::is_legal_part2);
+
+  EXPECT_EQ(Day12::count_possible_paths(nodes), 103);
+}
+
+TEST(Day12, count_possible_paths_even_larger_part2) {
+  auto connections_pairs = Day12::parse_input(EVEN_LARGER_EXAMPLE);
+  auto connection_map = Day12::create_map(connections_pairs);
+  auto nodes = Day12::create_nodes(connection_map, Day12::is_legal_part2);
+
+  EXPECT_EQ(Day12::count_possible_paths(nodes), 3509);
 }

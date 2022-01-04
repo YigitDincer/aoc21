@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <numeric>
+#include <optional>
 #include <ranges>
 
 
@@ -68,8 +69,8 @@ namespace Day12 {
     return connection_map;
   }
 
-  auto is_legal(std::vector<Node> const& nodes, std::string_view string_to_check, int parent_idx) -> bool {
-
+  auto is_legal(std::vector<Node> const &nodes, std::string_view string_to_check, int parent_idx)
+          -> bool {
     if (std::ranges::any_of(string_to_check, [](unsigned char c) { return std::islower(c); })) {
       while (parent_idx != -1) {
         if (nodes.at(parent_idx).name == string_to_check) {
@@ -79,16 +80,37 @@ namespace Day12 {
         }
       }
     }
-
     return true;
   }
 
-  auto count_possible_paths(std::vector<Node> const& nodes) -> size_t {
+  auto is_legal_part2(std::vector<Node> const &nodes, std::string_view string_to_check,
+                      int parent_idx) -> bool {
+    std::set<std::string_view> visited_lower_nodes;
+
+    if (std::ranges::any_of(string_to_check, [](unsigned char c) { return std::islower(c); })) {
+      while (parent_idx != -1) {
+
+        auto parent_node_name = nodes.at(parent_idx).name;
+
+        if(std::ranges::any_of(parent_node_name, [](unsigned char c){ return std::islower(c);}))
+        {
+          visited_lower_nodes.insert(nodes.at(parent_idx).name);
+        }
+
+
+          if (visited_lower_nodes.find(string_to_check) != visited_lower_nodes.end()) {
+            return false;
+          }
+
+        parent_idx = nodes.at(parent_idx).parent_idx;
+      }
+    }
+    return true;
+  }
+
+  auto count_possible_paths(std::vector<Node> const &nodes) -> size_t {
     return std::accumulate(nodes.begin(), nodes.end(), size_t{},
-                           [](size_t acc, Node const& node)
-                           {
-                             return acc + (node.name == "end");
-                           });
+                           [](size_t acc, Node const &node) { return acc + (node.name == "end"); });
   }
 
 }// namespace Day12
