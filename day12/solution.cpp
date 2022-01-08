@@ -85,23 +85,33 @@ namespace Day12 {
 
   auto is_legal_part2(std::vector<Node> const &nodes, std::string_view string_to_check,
                       int parent_idx) -> bool {
-    std::set<std::string_view> visited_lower_nodes;
+    std::map<std::string_view, size_t> visited_lower_nodes;
 
-    if (std::ranges::any_of(string_to_check, [](unsigned char c) { return std::islower(c); })) {
+    auto is_lower_word = [](std::string_view input) {
+      return std::ranges::any_of(input, [](unsigned char c) { return std::islower(c); });
+    };
+
+    if (is_lower_word(string_to_check)) {
+      auto parent_node_name = string_to_check;
+
       while (parent_idx != -1) {
 
-        auto parent_node_name = nodes.at(parent_idx).name;
-
-        if(std::ranges::any_of(parent_node_name, [](unsigned char c){ return std::islower(c);}))
-        {
-          visited_lower_nodes.insert(nodes.at(parent_idx).name);
-        }
-
-
-          if (visited_lower_nodes.find(string_to_check) != visited_lower_nodes.end()) {
-            return false;
+        if (is_lower_word(parent_node_name)) {
+          if (visited_lower_nodes.count(parent_node_name)) {
+            visited_lower_nodes[parent_node_name]++;
+          } else {
+            visited_lower_nodes[parent_node_name] = 1;
           }
 
+          if (std::ranges::any_of(visited_lower_nodes, [](auto entry) { return entry.second > 2; })
+              || std::ranges::count_if(visited_lower_nodes, [](auto entry) {
+                   return entry.second > 1;
+                 }) > 1) {
+            return false;
+          }
+        }
+
+        parent_node_name = nodes.at(parent_idx).name;
         parent_idx = nodes.at(parent_idx).parent_idx;
       }
     }
@@ -134,8 +144,12 @@ namespace AoC {
   auto Solution<12>::part2() const -> size_t {
     using namespace Day12;
 
-
-    return 42;
+    std::vector<std::pair<std::string, std::string>> connections_vec;
+    auto connections_pairs_range = report | std::views::transform(parse_connection);
+    std::ranges::copy(connections_pairs_range, std::back_inserter(connections_vec));
+    auto connection_map = create_map(connections_vec);
+    auto nodes = create_nodes(connection_map, is_legal_part2);
+    return count_possible_paths(nodes);
   }
 
 }// namespace AoC
